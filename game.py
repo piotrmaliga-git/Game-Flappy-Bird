@@ -26,15 +26,16 @@ def draw_base():
     screen.blit(base_surface,(base_x_pos + 576,900))
 
 # bird
-bird_surface = pygame.image.load("img/bird.png").convert()
-bird_surface = pygame.transform.scale2x(bird_surface)
+bird = pygame.transform.scale2x(pygame.image.load("img/bird.png").convert_alpha())
+bird_wing_up = pygame.transform.scale2x(pygame.image.load("img/bird_wing_up.png").convert_alpha())
+bird_wing_down = pygame.transform.scale2x(pygame.image.load("img/bird_wing_down.png").convert_alpha())
+bird_fames =[bird_wing_down,bird,bird_wing_up]
+bird_index = 0
+bird_surface = bird_fames[bird_index]
 bird_rect = bird_surface.get_rect(center = (100,512))
 
-bird_wing_up_surface = pygame.image.load("img/bird_wing_up.png").convert()
-bird_wing_up_surface = pygame.transform.scale2x(bird_wing_up_surface)
-
-bird_wing_down_surface = pygame.image.load("img/bird_wing_down.png").convert()
-bird_wing_down_surface = pygame.transform.scale2x(bird_wing_down_surface)
+BIRDFLAP = pygame.USEREVENT + 1
+pygame.time.set_timer(BIRDFLAP, 200)
 
 # pipe
 pipe_surface = pygame.image.load("img/pipe.png").convert()
@@ -73,6 +74,15 @@ def check_collision(pipes):
         return False
     return True
 
+def rotate_bird(bird):
+    new_bird = pygame.transform.rotozoom(bird, -bird_movement * 3, 1)
+    return new_bird
+
+def bird_animation():
+    new_bird = bird_fames[bird_index]
+    new_bird_rect = new_bird.get_rect(center =(100, bird_rect.centery))
+    return new_bird,new_bird_rect
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -89,14 +99,21 @@ while True:
                 bird_movement = 0
         if event.type == SPAWNPIPE:
             pipe_list.extend(create_pipes())
+        if event.type == BIRDFLAP:
+            if bird_index < 2:
+                bird_index += 1
+            else:
+                bird_index = 0
+            bird_surface,bird_rect = bird_animation()
 
     screen.blit(background_surface,(0,0))
 
     if game_active:
         # bird
         bird_movement += gravity
+        rotated_bird = rotate_bird(bird_surface)
         bird_rect.centery += bird_movement
-        screen.blit(bird_surface,bird_rect)
+        screen.blit(rotated_bird,bird_rect)
 
         # collision
         game_active= check_collision(pipe_list)
