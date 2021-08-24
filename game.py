@@ -5,6 +5,11 @@ pygame.init()
 # basic screen
 screen = pygame.display.set_mode((576,1024))
 pygame.display.set_caption('Flappy Bird')
+
+# screen icon
+icon =pygame.image.load('img/bird.png')
+pygame.display.set_icon(icon)
+
 clock = pygame.time.Clock()
 game_font = pygame.font.Font('font/04B_19.ttf',40)
 
@@ -19,15 +24,10 @@ high_score = 0
 background_surface = pygame.image.load('img/background.png').convert()
 background_surface = pygame.transform.scale2x(background_surface)
 
-
 # base
 base_surface = pygame.image.load('img/base.png').convert()
 base_surface = pygame.transform.scale2x(base_surface)
 base_x_pos = 0
-
-def draw_base():
-    screen.blit(base_surface,(base_x_pos,900))
-    screen.blit(base_surface,(base_x_pos + 576,900))
 
 # bird
 bird = pygame.transform.scale2x(pygame.image.load("img/bird.png").convert_alpha())
@@ -54,6 +54,16 @@ pipe_height = [400, 600, 800]
 # message
 game_over_surface = pygame.transform.scale2x(pygame.image.load('img/message.png').convert_alpha())
 game_over_rect =game_over_surface.get_rect(center =(288,512))
+
+# sounds
+flap_sound = pygame.mixer.Sound('sounds/sound_wing.wav')
+death_sound = pygame.mixer.Sound('sounds/sound_hit.wav')
+score_sound = pygame.mixer.Sound('sounds/sound_point.wav')
+score_sound_countdown = 100
+
+def draw_base():
+    screen.blit(base_surface,(base_x_pos,900))
+    screen.blit(base_surface,(base_x_pos + 576,900))
 
 def create_pipes():
     random_pipe_pos = random.choice(pipe_height)
@@ -96,12 +106,6 @@ def update_score(score, high_score):
     if score > high_score:
         high_score = score
     return high_score
-
-# sounds
-flap_sound = pygame.mixer.Sound('sounds/sound_wing.wav')
-death_sound = pygame.mixer.Sound('sounds/sound_hit.wav')
-score_sound = pygame.mixer.Sound('sounds/sound_point.wav')
-score_sound_countdown = 100
 
 def score_display(game_state):
     if game_state == 'main_game':
