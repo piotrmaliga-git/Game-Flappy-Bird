@@ -26,12 +26,12 @@ If you want to propose any changes and help me to develop my project, please fol
 1.  **Clone my repository**
 
 ```
-git clone  https://github.com/piotrmaliga-git/Converter-Celsius-to-Fahrenheit.github.io.git
+git clone  https://github.com/piotrmaliga-git/Game-Flappy-Bird.git
 ```
-if you use a SSH key;
+if you use a SSH key
 
 ```
-git clone git@github.com:piotrmaliga-git/Converter-Celsius-to-Fahrenheit.github.io.git
+git clone git@github.com:piotrmaliga-git/Game-Flappy-Bird.git
 ```
 
 2. **Open your code editor like Visual Studio Code**
